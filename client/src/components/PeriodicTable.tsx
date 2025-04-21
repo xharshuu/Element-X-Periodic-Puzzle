@@ -172,11 +172,26 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
               <div
                 key={`dropzone-${row}-${col}`}
                 className="element-dropzone"
-                style={{ gridRow: row, gridColumn: col }}
+                style={{ 
+                  gridRow: row, 
+                  gridColumn: col,
+                  position: 'relative'
+                }}
                 onDrop={(e) => handleDrop(e, row, col)}
                 onDragOver={(e) => handleDragOver(e, row, col)}
                 onDragLeave={handleDragLeave}
-              />
+              >
+                <span style={{ 
+                  fontSize: '10px', 
+                  opacity: 0.5,
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }}>
+                  ({row},{col})
+                </span>
+              </div>
             );
           }
         } else {

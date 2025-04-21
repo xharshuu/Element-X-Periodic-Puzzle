@@ -36,7 +36,11 @@ const ElementPalette: React.FC<ElementPaletteProps> = ({ elements, getCategoryCo
         color: '#64ffda',
         fontSize: '18px',
         fontWeight: 'bold',
-        textShadow: '0 0 5px rgba(100, 255, 218, 0.5)'
+        textShadow: '0 0 5px rgba(100, 255, 218, 0.5)',
+        background: 'rgba(0,0,0,0.3)',
+        padding: '8px',
+        borderRadius: '4px',
+        border: '1px solid rgba(100, 255, 218, 0.3)'
       }}>
         Element Palette - Drag to Their Correct Positions
       </h3>
