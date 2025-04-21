@@ -47,26 +47,94 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
   // Initialize or shuffle the periodic table layout
   useEffect(() => {
     const initializeGame = () => {
-      // For level 1, only show a subset of elements (main groups)
+      // Filter elements based on level
       let elementsToShow = [...periodicTableData];
       
-      if (level === 1) {
-        elementsToShow = periodicTableData.filter((el: ElementData) => 
-          el.category === 'alkali' || 
-          el.category === 'alkaline' || 
-          el.category === 'nonmetals' || 
-          el.category === 'noble' ||
-          el.category === 'halogens'
-        );
+      // Apply different filters for each level
+      switch(level) {
+        case 1:
+          // Level 1: Basic elements (alkali, alkaline, noble gases)
+          elementsToShow = periodicTableData.filter((el: ElementData) => 
+            el.category === 'alkali' || 
+            el.category === 'alkaline' || 
+            el.category === 'noble'
+          );
+          break;
+          
+        case 2:
+          // Level 2: Add nonmetals and halogens
+          elementsToShow = periodicTableData.filter((el: ElementData) => 
+            el.category === 'alkali' || 
+            el.category === 'alkaline' || 
+            el.category === 'noble' ||
+            el.category === 'nonmetals' ||
+            el.category === 'halogens'
+          );
+          break;
+          
+        case 3:
+          // Level 3: Add metalloids
+          elementsToShow = periodicTableData.filter((el: ElementData) => 
+            el.category === 'alkali' || 
+            el.category === 'alkaline' || 
+            el.category === 'noble' ||
+            el.category === 'nonmetals' ||
+            el.category === 'halogens' ||
+            el.category === 'metalloids'
+          );
+          break;
+          
+        case 4:
+          // Level 4: Add transition metals (first row)
+          elementsToShow = periodicTableData.filter((el: ElementData) => 
+            el.category === 'alkali' || 
+            el.category === 'alkaline' || 
+            el.category === 'noble' ||
+            el.category === 'nonmetals' ||
+            el.category === 'halogens' ||
+            el.category === 'metalloids' ||
+            (el.category === 'transition' && el.row <= 4)
+          );
+          break;
+          
+        case 5:
+          // Level 5: Add post-transition metals
+          elementsToShow = periodicTableData.filter((el: ElementData) => 
+            el.category === 'alkali' || 
+            el.category === 'alkaline' || 
+            el.category === 'noble' ||
+            el.category === 'nonmetals' ||
+            el.category === 'halogens' ||
+            el.category === 'metalloids' ||
+            el.category === 'transition' ||
+            el.category === 'post-transition'
+          );
+          break;
+          
+        case 6:
+          // Level 6: All elements
+          // No filter needed, use all elements
+          break;
+          
+        default:
+          // Default to level 1
+          elementsToShow = periodicTableData.filter((el: ElementData) => 
+            el.category === 'alkali' || 
+            el.category === 'alkaline' || 
+            el.category === 'noble'
+          );
       }
       
       // Set full layout
       setFullTableLayout(elementsToShow);
       
       // Select elements for the palette (elements to be dragged)
-      // For demonstration, select the first period elements
-      // This ensures we have a consistent set of elements to drag
-      const numElementsForPalette = Math.min(16, elementsToShow.length);
+      // Limit the number of elements in palette based on level
+      const maxElementsPerLevel = [10, 15, 20, 25, 30, 40];
+      const numElementsForPalette = Math.min(
+        maxElementsPerLevel[level - 1] || 10, 
+        elementsToShow.length
+      );
       
       // Sort by atomic number to get a nice order
       const sortedElements = [...elementsToShow].sort((a, b) => a.atomicNumber - b.atomicNumber);
@@ -77,8 +145,8 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
       // Reset placed elements
       setPlacedElements([]);
       
-      console.log("Game initialized with", elementsToShow.length, "elements");
-      console.log("Palette has", selectedForPalette.length, "elements");
+      console.log(`Level ${level} initialized with ${elementsToShow.length} elements`);
+      console.log(`Palette has ${selectedForPalette.length} elements`);
     };
     
     initializeGame();

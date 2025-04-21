@@ -30,6 +30,8 @@ function App() {
   const [time, setTime] = useState(600); // 10 minutes in seconds
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [elementsCorrect, setElementsCorrect] = useState(0);
+  const [totalElementsInLevel, setTotalElementsInLevel] = useState(0);
   
   // Initialize audio elements
   useEffect(() => {
@@ -101,8 +103,27 @@ function App() {
   };
   
   const handleStart = () => {
+    // Reset game state
+    setScore(0);
+    setLevel(1);
+    setElementsCorrect(0);
+    setTime(600); // Reset timer to 10 minutes
+    
+    // Show level description before starting
+    const levelDescriptions = [
+      "Level 1: Basic elements - Alkali metals, Alkaline earth metals, and Noble gases",
+      "Level 2: Adding non-metals and halogens",
+      "Level 3: Adding metalloids",
+      "Level 4: Adding transition metals",
+      "Level 5: Adding post-transition metals",
+      "Level 6: All elements - Complete the periodic table!"
+    ];
+    
+    alert(`Starting Game!\n\n${levelDescriptions[0]}`);
+    
     setIsPlaying(true);
     setIsPaused(false);
+    
     // Start playing background music
     if (!useAudio.getState().isMuted) {
       useAudio.getState().backgroundMusic?.play();
@@ -127,14 +148,75 @@ function App() {
     useAudio.getState().playHit();
   };
   
+  // Handle level setup when level changes
+  useEffect(() => {
+    // Reset elements correct counter when level changes
+    setElementsCorrect(0);
+    
+    // Set total elements based on level
+    // Different number of elements for each level
+    let elementsCount = 0;
+    
+    switch(level) {
+      case 1: elementsCount = 10; break; // Basic elements (alkali, alkaline, noble gases)
+      case 2: elementsCount = 15; break; // Above + some non-metals
+      case 3: elementsCount = 20; break; // Above + metalloids
+      case 4: elementsCount = 25; break; // Above + transition metals
+      case 5: elementsCount = 30; break; // Above + post-transition metals
+      case 6: elementsCount = 40; break; // Nearly all elements
+      default: elementsCount = 10;
+    }
+    
+    setTotalElementsInLevel(elementsCount);
+    
+    // Add time for higher levels
+    if (level > 1 && isPlaying) {
+      setTime(prev => prev + 120); // Add 2 minutes per level
+    }
+    
+  }, [level, isPlaying]);
+
   const handleCorrectMatch = () => {
-    setScore((prevScore) => prevScore + 10);
+    const pointsPerElement = 10;
+    setScore((prevScore) => prevScore + pointsPerElement);
+    setElementsCorrect(prev => {
+      const newValue = prev + 1;
+      
+      // Level descriptions for alerts
+      const levelDescriptions = [
+        "Level 1: Basic elements - Alkali metals, Alkaline earth metals, and Noble gases",
+        "Level 2: Adding non-metals and halogens",
+        "Level 3: Adding metalloids",
+        "Level 4: Adding transition metals",
+        "Level 5: Adding post-transition metals",
+        "Level 6: All elements - Complete the periodic table!"
+      ];
+      
+      // Check if all elements for this level are placed correctly
+      if (newValue >= totalElementsInLevel && level < 6) {
+        // Level up!
+        setTimeout(() => {
+          const nextLevel = level + 1;
+          alert(`Congratulations! You completed level ${level}!\n\nMoving to ${levelDescriptions[nextLevel-1]}`);
+          setLevel(prev => prev + 1);
+        }, 500);
+      } else if (newValue >= totalElementsInLevel && level === 6) {
+        // Game completed!
+        setTimeout(() => {
+          alert(`Congratulations! You completed all levels!\n\nYou are a periodic table master!\n\nFinal score: ${score + pointsPerElement}`);
+          setIsPlaying(false);
+        }, 500);
+      }
+      
+      return newValue;
+    });
+    
     useAudio.getState().playSuccess();
   };
   
   const handleGameOver = () => {
     setIsPlaying(false);
-    alert(`Game Over! Your score is ${score}`);
+    alert(`Game Over! Your final score is ${score}. You reached level ${level}.`);
   };
 
   return (
@@ -143,7 +225,23 @@ function App() {
         <h1>Periodic Puzzle</h1>
         <div className="game-stats">
           <div className="stat">Score: {score}</div>
-          <div className="stat">Level: {level}</div>
+          <div className="stat">
+            <div>Level: {level} / 6</div>
+            {isPlaying && (
+              <div className="progress-bar">
+                <div 
+                  className="progress-fill" 
+                  style={{ 
+                    width: `${Math.min(100, (elementsCorrect / totalElementsInLevel) * 100)}%`,
+                    backgroundColor: level <= 3 ? '#64ffda' : level <= 5 ? '#ff9d42' : '#ff4242'
+                  }}
+                ></div>
+                <div className="progress-text">
+                  {elementsCorrect} / {totalElementsInLevel}
+                </div>
+              </div>
+            )}
+          </div>
           <div className="stat">Time: {formatTime(time)}</div>
         </div>
         <div className="game-controls">
