@@ -1,4 +1,13 @@
-import { ElementData } from '../types/types';
+// ElementData interface definition
+interface ElementData {
+  symbol: string;
+  name: string;
+  atomicNumber: number;
+  row: number;
+  col: number;
+  category: string;
+  displayType?: 'symbol' | 'name';
+}
 
 // This is a simplified periodic table data
 export const periodicTableData: ElementData[] = [

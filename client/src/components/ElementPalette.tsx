@@ -1,5 +1,14 @@
 import React from 'react';
-import { ElementData } from '../types/types';
+// Import ElementData type
+interface ElementData {
+  symbol: string;
+  name: string;
+  atomicNumber: number;
+  row: number;
+  col: number;
+  category: string;
+  displayType?: 'symbol' | 'name';
+}
 
 interface ElementPaletteProps {
   elements: ElementData[];

@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useAudio } from "./lib/stores/useAudio";
 import PeriodicTable from "./components/PeriodicTable";
 import './index.css';
-import { Category } from "./types/types";
+// Category type definition
+interface Category {
+  id: string;
+  name: string;
+  color: string;
+}
 
 // Define the different element categories
 const categories: Category[] = [

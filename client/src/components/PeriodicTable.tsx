@@ -2,7 +2,23 @@ import React, { useState, useEffect } from 'react';
 import ElementBlock from './ElementBlock';
 import ElementPalette from './ElementPalette';
 import { periodicTableData } from '../data/periodicTableData';
-import { ElementData, Category } from '../types/types';
+
+// Define ElementData and Category interfaces directly
+interface ElementData {
+  symbol: string;
+  name: string;
+  atomicNumber: number;
+  row: number;
+  col: number;
+  category: string;
+  displayType?: 'symbol' | 'name';
+}
+
+interface Category {
+  id: string;
+  name: string;
+  color: string;
+}
 
 interface PeriodicTableProps {
   level: number;
@@ -39,23 +55,30 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
           el.category === 'alkali' || 
           el.category === 'alkaline' || 
           el.category === 'nonmetals' || 
-          el.category === 'noble'
+          el.category === 'noble' ||
+          el.category === 'halogens'
         );
       }
       
       // Set full layout
       setFullTableLayout(elementsToShow);
       
-      // Select some elements for the palette (elements to be dragged)
-      // For simplicity, let's select 10 random elements for the palette
-      const numElementsForPalette = Math.min(10, elementsToShow.length);
-      const shuffledForPalette = [...elementsToShow].sort(() => 0.5 - Math.random());
-      const selectedForPalette = shuffledForPalette.slice(0, numElementsForPalette);
+      // Select elements for the palette (elements to be dragged)
+      // For demonstration, select the first period elements
+      // This ensures we have a consistent set of elements to drag
+      const numElementsForPalette = Math.min(16, elementsToShow.length);
+      
+      // Sort by atomic number to get a nice order
+      const sortedElements = [...elementsToShow].sort((a, b) => a.atomicNumber - b.atomicNumber);
+      const selectedForPalette = sortedElements.slice(0, numElementsForPalette);
       
       setPaletteElements(selectedForPalette);
       
       // Reset placed elements
       setPlacedElements([]);
+      
+      console.log("Game initialized with", elementsToShow.length, "elements");
+      console.log("Palette has", selectedForPalette.length, "elements");
     };
     
     initializeGame();

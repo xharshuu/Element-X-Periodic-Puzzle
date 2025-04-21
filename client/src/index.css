@@ -121,11 +121,19 @@
   overflow: auto;
 }
 
+.periodic-table-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .periodic-table {
   display: grid;
   grid-template-columns: repeat(18, 40px);
   grid-template-rows: repeat(10, 40px);
   gap: 2px;
+  margin-top: 20px;
 }
 
 .element {
