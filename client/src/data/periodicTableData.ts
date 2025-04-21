@@ -1,8 +1,7 @@
-// Periodic Table Data
-// This data represents the elements in the periodic table with their positions
-// Categories are: alkali, alkaline, transition, post-transition, metalloids, nonmetals, noble, lanthanides, actinides
+import { ElementData } from '../types/types';
 
-export const periodicTableData = [
+// This is a simplified periodic table data
+export const periodicTableData: ElementData[] = [
   // Row 1
   { symbol: 'H', name: 'Hydrogen', atomicNumber: 1, row: 1, col: 1, category: 'nonmetals' },
   { symbol: 'He', name: 'Helium', atomicNumber: 2, row: 1, col: 18, category: 'noble' },
@@ -14,7 +13,7 @@ export const periodicTableData = [
   { symbol: 'C', name: 'Carbon', atomicNumber: 6, row: 2, col: 14, category: 'nonmetals' },
   { symbol: 'N', name: 'Nitrogen', atomicNumber: 7, row: 2, col: 15, category: 'nonmetals' },
   { symbol: 'O', name: 'Oxygen', atomicNumber: 8, row: 2, col: 16, category: 'nonmetals' },
-  { symbol: 'F', name: 'Fluorine', atomicNumber: 9, row: 2, col: 17, category: 'nonmetals' },
+  { symbol: 'F', name: 'Fluorine', atomicNumber: 9, row: 2, col: 17, category: 'halogens' },
   { symbol: 'Ne', name: 'Neon', atomicNumber: 10, row: 2, col: 18, category: 'noble' },
   
   // Row 3
@@ -24,118 +23,46 @@ export const periodicTableData = [
   { symbol: 'Si', name: 'Silicon', atomicNumber: 14, row: 3, col: 14, category: 'metalloids' },
   { symbol: 'P', name: 'Phosphorus', atomicNumber: 15, row: 3, col: 15, category: 'nonmetals' },
   { symbol: 'S', name: 'Sulfur', atomicNumber: 16, row: 3, col: 16, category: 'nonmetals' },
-  { symbol: 'Cl', name: 'Chlorine', atomicNumber: 17, row: 3, col: 17, category: 'nonmetals' },
+  { symbol: 'Cl', name: 'Chlorine', atomicNumber: 17, row: 3, col: 17, category: 'halogens' },
   { symbol: 'Ar', name: 'Argon', atomicNumber: 18, row: 3, col: 18, category: 'noble' },
   
-  // Row 4
+  // Row 4 (only main groups for simplicity)
   { symbol: 'K', name: 'Potassium', atomicNumber: 19, row: 4, col: 1, category: 'alkali' },
   { symbol: 'Ca', name: 'Calcium', atomicNumber: 20, row: 4, col: 2, category: 'alkaline' },
-  { symbol: 'Sc', name: 'Scandium', atomicNumber: 21, row: 4, col: 3, category: 'transition' },
-  { symbol: 'Ti', name: 'Titanium', atomicNumber: 22, row: 4, col: 4, category: 'transition' },
-  { symbol: 'V', name: 'Vanadium', atomicNumber: 23, row: 4, col: 5, category: 'transition' },
-  { symbol: 'Cr', name: 'Chromium', atomicNumber: 24, row: 4, col: 6, category: 'transition' },
-  { symbol: 'Mn', name: 'Manganese', atomicNumber: 25, row: 4, col: 7, category: 'transition' },
-  { symbol: 'Fe', name: 'Iron', atomicNumber: 26, row: 4, col: 8, category: 'transition' },
-  { symbol: 'Co', name: 'Cobalt', atomicNumber: 27, row: 4, col: 9, category: 'transition' },
-  { symbol: 'Ni', name: 'Nickel', atomicNumber: 28, row: 4, col: 10, category: 'transition' },
-  { symbol: 'Cu', name: 'Copper', atomicNumber: 29, row: 4, col: 11, category: 'transition' },
-  { symbol: 'Zn', name: 'Zinc', atomicNumber: 30, row: 4, col: 12, category: 'transition' },
   { symbol: 'Ga', name: 'Gallium', atomicNumber: 31, row: 4, col: 13, category: 'post-transition' },
   { symbol: 'Ge', name: 'Germanium', atomicNumber: 32, row: 4, col: 14, category: 'metalloids' },
   { symbol: 'As', name: 'Arsenic', atomicNumber: 33, row: 4, col: 15, category: 'metalloids' },
   { symbol: 'Se', name: 'Selenium', atomicNumber: 34, row: 4, col: 16, category: 'nonmetals' },
-  { symbol: 'Br', name: 'Bromine', atomicNumber: 35, row: 4, col: 17, category: 'nonmetals' },
+  { symbol: 'Br', name: 'Bromine', atomicNumber: 35, row: 4, col: 17, category: 'halogens' },
   { symbol: 'Kr', name: 'Krypton', atomicNumber: 36, row: 4, col: 18, category: 'noble' },
   
-  // Row 5
+  // Row 5 (only main groups for simplicity)
   { symbol: 'Rb', name: 'Rubidium', atomicNumber: 37, row: 5, col: 1, category: 'alkali' },
   { symbol: 'Sr', name: 'Strontium', atomicNumber: 38, row: 5, col: 2, category: 'alkaline' },
-  { symbol: 'Y', name: 'Yttrium', atomicNumber: 39, row: 5, col: 3, category: 'transition' },
-  { symbol: 'Zr', name: 'Zirconium', atomicNumber: 40, row: 5, col: 4, category: 'transition' },
-  { symbol: 'Nb', name: 'Niobium', atomicNumber: 41, row: 5, col: 5, category: 'transition' },
-  { symbol: 'Mo', name: 'Molybdenum', atomicNumber: 42, row: 5, col: 6, category: 'transition' },
-  { symbol: 'Tc', name: 'Technetium', atomicNumber: 43, row: 5, col: 7, category: 'transition' },
-  { symbol: 'Ru', name: 'Ruthenium', atomicNumber: 44, row: 5, col: 8, category: 'transition' },
-  { symbol: 'Rh', name: 'Rhodium', atomicNumber: 45, row: 5, col: 9, category: 'transition' },
-  { symbol: 'Pd', name: 'Palladium', atomicNumber: 46, row: 5, col: 10, category: 'transition' },
-  { symbol: 'Ag', name: 'Silver', atomicNumber: 47, row: 5, col: 11, category: 'transition' },
-  { symbol: 'Cd', name: 'Cadmium', atomicNumber: 48, row: 5, col: 12, category: 'transition' },
   { symbol: 'In', name: 'Indium', atomicNumber: 49, row: 5, col: 13, category: 'post-transition' },
   { symbol: 'Sn', name: 'Tin', atomicNumber: 50, row: 5, col: 14, category: 'post-transition' },
   { symbol: 'Sb', name: 'Antimony', atomicNumber: 51, row: 5, col: 15, category: 'metalloids' },
   { symbol: 'Te', name: 'Tellurium', atomicNumber: 52, row: 5, col: 16, category: 'metalloids' },
-  { symbol: 'I', name: 'Iodine', atomicNumber: 53, row: 5, col: 17, category: 'nonmetals' },
+  { symbol: 'I', name: 'Iodine', atomicNumber: 53, row: 5, col: 17, category: 'halogens' },
   { symbol: 'Xe', name: 'Xenon', atomicNumber: 54, row: 5, col: 18, category: 'noble' },
   
-  // Row 6
+  // Row 6 (only main groups for simplicity)
   { symbol: 'Cs', name: 'Cesium', atomicNumber: 55, row: 6, col: 1, category: 'alkali' },
   { symbol: 'Ba', name: 'Barium', atomicNumber: 56, row: 6, col: 2, category: 'alkaline' },
-  { symbol: 'La', name: 'Lanthanum', atomicNumber: 57, row: 6, col: 3, category: 'lanthanides' },
-  { symbol: 'Hf', name: 'Hafnium', atomicNumber: 72, row: 6, col: 4, category: 'transition' },
-  { symbol: 'Ta', name: 'Tantalum', atomicNumber: 73, row: 6, col: 5, category: 'transition' },
-  { symbol: 'W', name: 'Tungsten', atomicNumber: 74, row: 6, col: 6, category: 'transition' },
-  { symbol: 'Re', name: 'Rhenium', atomicNumber: 75, row: 6, col: 7, category: 'transition' },
-  { symbol: 'Os', name: 'Osmium', atomicNumber: 76, row: 6, col: 8, category: 'transition' },
-  { symbol: 'Ir', name: 'Iridium', atomicNumber: 77, row: 6, col: 9, category: 'transition' },
-  { symbol: 'Pt', name: 'Platinum', atomicNumber: 78, row: 6, col: 10, category: 'transition' },
-  { symbol: 'Au', name: 'Gold', atomicNumber: 79, row: 6, col: 11, category: 'transition' },
-  { symbol: 'Hg', name: 'Mercury', atomicNumber: 80, row: 6, col: 12, category: 'transition' },
   { symbol: 'Tl', name: 'Thallium', atomicNumber: 81, row: 6, col: 13, category: 'post-transition' },
   { symbol: 'Pb', name: 'Lead', atomicNumber: 82, row: 6, col: 14, category: 'post-transition' },
   { symbol: 'Bi', name: 'Bismuth', atomicNumber: 83, row: 6, col: 15, category: 'post-transition' },
   { symbol: 'Po', name: 'Polonium', atomicNumber: 84, row: 6, col: 16, category: 'post-transition' },
-  { symbol: 'At', name: 'Astatine', atomicNumber: 85, row: 6, col: 17, category: 'metalloids' },
+  { symbol: 'At', name: 'Astatine', atomicNumber: 85, row: 6, col: 17, category: 'halogens' },
   { symbol: 'Rn', name: 'Radon', atomicNumber: 86, row: 6, col: 18, category: 'noble' },
   
-  // Row 7
+  // Row 7 (only main groups for simplicity)
   { symbol: 'Fr', name: 'Francium', atomicNumber: 87, row: 7, col: 1, category: 'alkali' },
   { symbol: 'Ra', name: 'Radium', atomicNumber: 88, row: 7, col: 2, category: 'alkaline' },
-  { symbol: 'Ac', name: 'Actinium', atomicNumber: 89, row: 7, col: 3, category: 'actinides' },
-  { symbol: 'Rf', name: 'Rutherfordium', atomicNumber: 104, row: 7, col: 4, category: 'transition' },
-  { symbol: 'Db', name: 'Dubnium', atomicNumber: 105, row: 7, col: 5, category: 'transition' },
-  { symbol: 'Sg', name: 'Seaborgium', atomicNumber: 106, row: 7, col: 6, category: 'transition' },
-  { symbol: 'Bh', name: 'Bohrium', atomicNumber: 107, row: 7, col: 7, category: 'transition' },
-  { symbol: 'Hs', name: 'Hassium', atomicNumber: 108, row: 7, col: 8, category: 'transition' },
-  { symbol: 'Mt', name: 'Meitnerium', atomicNumber: 109, row: 7, col: 9, category: 'transition' },
-  { symbol: 'Ds', name: 'Darmstadtium', atomicNumber: 110, row: 7, col: 10, category: 'transition' },
-  { symbol: 'Rg', name: 'Roentgenium', atomicNumber: 111, row: 7, col: 11, category: 'transition' },
-  { symbol: 'Cn', name: 'Copernicium', atomicNumber: 112, row: 7, col: 12, category: 'transition' },
-  { symbol: 'Nh', name: 'Nihonium', atomicNumber: 113, row: 7, col: 13, category: 'post-transition' },
-  { symbol: 'Fl', name: 'Flerovium', atomicNumber: 114, row: 7, col: 14, category: 'post-transition' },
-  { symbol: 'Mc', name: 'Moscovium', atomicNumber: 115, row: 7, col: 15, category: 'post-transition' },
-  { symbol: 'Lv', name: 'Livermorium', atomicNumber: 116, row: 7, col: 16, category: 'post-transition' },
-  { symbol: 'Ts', name: 'Tennessine', atomicNumber: 117, row: 7, col: 17, category: 'post-transition' },
-  { symbol: 'Og', name: 'Oganesson', atomicNumber: 118, row: 7, col: 18, category: 'noble' },
-  
-  // Lanthanides (Row 8)
-  { symbol: 'Ce', name: 'Cerium', atomicNumber: 58, row: 8, col: 4, category: 'lanthanides' },
-  { symbol: 'Pr', name: 'Praseodymium', atomicNumber: 59, row: 8, col: 5, category: 'lanthanides' },
-  { symbol: 'Nd', name: 'Neodymium', atomicNumber: 60, row: 8, col: 6, category: 'lanthanides' },
-  { symbol: 'Pm', name: 'Promethium', atomicNumber: 61, row: 8, col: 7, category: 'lanthanides' },
-  { symbol: 'Sm', name: 'Samarium', atomicNumber: 62, row: 8, col: 8, category: 'lanthanides' },
-  { symbol: 'Eu', name: 'Europium', atomicNumber: 63, row: 8, col: 9, category: 'lanthanides' },
-  { symbol: 'Gd', name: 'Gadolinium', atomicNumber: 64, row: 8, col: 10, category: 'lanthanides' },
-  { symbol: 'Tb', name: 'Terbium', atomicNumber: 65, row: 8, col: 11, category: 'lanthanides' },
-  { symbol: 'Dy', name: 'Dysprosium', atomicNumber: 66, row: 8, col: 12, category: 'lanthanides' },
-  { symbol: 'Ho', name: 'Holmium', atomicNumber: 67, row: 8, col: 13, category: 'lanthanides' },
-  { symbol: 'Er', name: 'Erbium', atomicNumber: 68, row: 8, col: 14, category: 'lanthanides' },
-  { symbol: 'Tm', name: 'Thulium', atomicNumber: 69, row: 8, col: 15, category: 'lanthanides' },
-  { symbol: 'Yb', name: 'Ytterbium', atomicNumber: 70, row: 8, col: 16, category: 'lanthanides' },
-  { symbol: 'Lu', name: 'Lutetium', atomicNumber: 71, row: 8, col: 17, category: 'lanthanides' },
-  
-  // Actinides (Row 9)
-  { symbol: 'Th', name: 'Thorium', atomicNumber: 90, row: 9, col: 4, category: 'actinides' },
-  { symbol: 'Pa', name: 'Protactinium', atomicNumber: 91, row: 9, col: 5, category: 'actinides' },
-  { symbol: 'U', name: 'Uranium', atomicNumber: 92, row: 9, col: 6, category: 'actinides' },
-  { symbol: 'Np', name: 'Neptunium', atomicNumber: 93, row: 9, col: 7, category: 'actinides' },
-  { symbol: 'Pu', name: 'Plutonium', atomicNumber: 94, row: 9, col: 8, category: 'actinides' },
-  { symbol: 'Am', name: 'Americium', atomicNumber: 95, row: 9, col: 9, category: 'actinides' },
-  { symbol: 'Cm', name: 'Curium', atomicNumber: 96, row: 9, col: 10, category: 'actinides' },
-  { symbol: 'Bk', name: 'Berkelium', atomicNumber: 97, row: 9, col: 11, category: 'actinides' },
-  { symbol: 'Cf', name: 'Californium', atomicNumber: 98, row: 9, col: 12, category: 'actinides' },
-  { symbol: 'Es', name: 'Einsteinium', atomicNumber: 99, row: 9, col: 13, category: 'actinides' },
-  { symbol: 'Fm', name: 'Fermium', atomicNumber: 100, row: 9, col: 14, category: 'actinides' },
-  { symbol: 'Md', name: 'Mendelevium', atomicNumber: 101, row: 9, col: 15, category: 'actinides' },
-  { symbol: 'No', name: 'Nobelium', atomicNumber: 102, row: 9, col: 16, category: 'actinides' },
-  { symbol: 'Lr', name: 'Lawrencium', atomicNumber: 103, row: 9, col: 17, category: 'actinides' },
+  { symbol: 'Nh', name: 'Nihonium', atomicNumber: 113, row: 7, col: 13, category: 'unknown' },
+  { symbol: 'Fl', name: 'Flerovium', atomicNumber: 114, row: 7, col: 14, category: 'unknown' },
+  { symbol: 'Mc', name: 'Moscovium', atomicNumber: 115, row: 7, col: 15, category: 'unknown' },
+  { symbol: 'Lv', name: 'Livermorium', atomicNumber: 116, row: 7, col: 16, category: 'unknown' },
+  { symbol: 'Ts', name: 'Tennessine', atomicNumber: 117, row: 7, col: 17, category: 'unknown' },
+  { symbol: 'Og', name: 'Oganesson', atomicNumber: 118, row: 7, col: 18, category: 'unknown' },
 ];

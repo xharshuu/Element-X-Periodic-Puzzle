@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 import { useAudio } from "./lib/stores/useAudio";
 import PeriodicTable from "./components/PeriodicTable";
 import './index.css';
+import { Category } from "./types/types";
 
 // Define the different element categories
-const categories = [
+const categories: Category[] = [
   { id: 'alkali', name: 'Alkali Metals', color: '#ff9999' },
   { id: 'alkaline', name: 'Alkaline Earth Metals', color: '#ffcc66' },
   { id: 'transition', name: 'Transition Metals', color: '#cc9966' },
   { id: 'post-transition', name: 'Post-Transition Metals', color: '#99cc99' },
   { id: 'metalloids', name: 'Metalloids', color: '#66cccc' },
   { id: 'nonmetals', name: 'Nonmetals', color: '#6699cc' },
+  { id: 'halogens', name: 'Halogens', color: '#6699aa' },
   { id: 'noble', name: 'Noble Gases', color: '#9999cc' },
   { id: 'lanthanides', name: 'Lanthanides', color: '#cc99cc' },
-  { id: 'actinides', name: 'Actinides', color: '#cc6699' }
+  { id: 'actinides', name: 'Actinides', color: '#cc6699' },
+  { id: 'unknown', name: 'Unknown Properties', color: '#cccccc' }
 ];
 
 function App() {

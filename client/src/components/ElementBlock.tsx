@@ -1,4 +1,5 @@
 import React from 'react';
+import { ElementData } from '../types/types';
 
 interface ElementProps {
   element: {
@@ -25,22 +26,30 @@ const ElementBlock: React.FC<ElementProps> = ({
   color,
   displayType
 }) => {
-  // Determine which content to display based on displayType
+  // Determine the CSS classes for this element
+  const elementClasses = [
+    'element',
+    isSelected ? 'selected' : '',
+    isMatched ? 'matched' : ''
+  ].filter(Boolean).join(' ');
+  
+  // Display either the symbol or the name based on displayType
   const displayContent = displayType === 'symbol' ? element.symbol : element.name;
   
   return (
-    <div 
-      className={`element ${isSelected ? 'selected' : ''} ${isMatched ? 'matched' : ''}`}
-      style={{ 
-        backgroundColor: color, 
-        gridRow: element.row, 
-        gridColumn: element.col,
-        opacity: isMatched ? 0.6 : 1
+    <div
+      className={elementClasses}
+      style={{
+        backgroundColor: color,
+        gridRow: element.row,
+        gridColumn: element.col
       }}
       onClick={onClick}
     >
       <span className="element-number">{element.atomicNumber}</span>
-      <span className="element-symbol">{displayContent}</span>
+      <span className={displayType === 'symbol' ? 'element-symbol' : 'element-name'}>
+        {displayContent}
+      </span>
     </div>
   );
 };
