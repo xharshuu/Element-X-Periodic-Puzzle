@@ -176,13 +176,24 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
     
     if (correctPosition) {
       // Element was placed correctly
-      setPlacedElements(prev => [...prev, elementSymbol]);
-      onCorrectMatch(); // Increase score
+      setPlacedElements(prev => {
+        const newPlaced = [...prev, elementSymbol];
+        console.log(`Element ${elementSymbol} placed correctly! Total placed: ${newPlaced.length}`);
+        return newPlaced;
+      });
+      
+      // Log the element placed
+      console.log(`Correct placement: ${droppedElement.name} (${droppedElement.symbol}) at position (${row},${col})`);
+      
+      onCorrectMatch(); // Increase score and check for level completion
       
       // Play success sound
       const audio = new Audio('/sounds/success.mp3');
       audio.play();
     } else {
+      // Log incorrect placement
+      console.log(`Incorrect placement: ${droppedElement.name} (${droppedElement.symbol}) at position (${row},${col})`);
+      
       // Play error sound
       const audio = new Audio('/sounds/hit.mp3');
       audio.play();

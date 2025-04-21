@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAudio } from "./lib/stores/useAudio";
 import PeriodicTable from "./components/PeriodicTable";
+import LevelInfo from "./components/LevelInfo";
 import './index.css';
 // Category type definition
 interface Category {
@@ -32,6 +33,7 @@ function App() {
   const [isPaused, setIsPaused] = useState(false);
   const [elementsCorrect, setElementsCorrect] = useState(0);
   const [totalElementsInLevel, setTotalElementsInLevel] = useState(0);
+  const [showLevelInfo, setShowLevelInfo] = useState(false);
   
   // Initialize audio elements
   useEffect(() => {
@@ -109,17 +111,8 @@ function App() {
     setElementsCorrect(0);
     setTime(600); // Reset timer to 10 minutes
     
-    // Show level description before starting
-    const levelDescriptions = [
-      "Level 1: Basic elements - Alkali metals, Alkaline earth metals, and Noble gases",
-      "Level 2: Adding non-metals and halogens",
-      "Level 3: Adding metalloids",
-      "Level 4: Adding transition metals",
-      "Level 5: Adding post-transition metals",
-      "Level 6: All elements - Complete the periodic table!"
-    ];
-    
-    alert(`Starting Game!\n\n${levelDescriptions[0]}`);
+    // Show level information
+    setShowLevelInfo(true);
     
     setIsPlaying(true);
     setIsPaused(false);
@@ -168,10 +161,28 @@ function App() {
     }
     
     setTotalElementsInLevel(elementsCount);
+    console.log(`Level changed to ${level}, total elements set to ${elementsCount}`);
     
     // Add time for higher levels
     if (level > 1 && isPlaying) {
-      setTime(prev => prev + 120); // Add 2 minutes per level
+      setTime(prev => {
+        const newTime = prev + 120;
+        console.log(`Adding time for level ${level}, new time: ${newTime}`);
+        return newTime;
+      }); // Add 2 minutes per level
+    }
+    
+    // Show level transition message
+    if (level > 1 && isPlaying) {
+      const levelDescriptions = [
+        "Level 1: Basic elements - Alkali metals, Alkaline earth metals, and Noble gases",
+        "Level 2: Adding non-metals and halogens",
+        "Level 3: Adding metalloids",
+        "Level 4: Adding transition metals",
+        "Level 5: Adding post-transition metals",
+        "Level 6: All elements - Complete the periodic table!"
+      ];
+      console.log(`Level transition: ${levelDescriptions[level-1]}`);
     }
     
   }, [level, isPlaying]);
@@ -182,27 +193,27 @@ function App() {
     setElementsCorrect(prev => {
       const newValue = prev + 1;
       
-      // Level descriptions for alerts
-      const levelDescriptions = [
-        "Level 1: Basic elements - Alkali metals, Alkaline earth metals, and Noble gases",
-        "Level 2: Adding non-metals and halogens",
-        "Level 3: Adding metalloids",
-        "Level 4: Adding transition metals",
-        "Level 5: Adding post-transition metals",
-        "Level 6: All elements - Complete the periodic table!"
-      ];
-      
       // Check if all elements for this level are placed correctly
       if (newValue >= totalElementsInLevel && level < 6) {
         // Level up!
         setTimeout(() => {
+          // Play success sound for level completion
+          useAudio.getState().playSuccess();
+          
+          // Set the next level
           const nextLevel = level + 1;
-          alert(`Congratulations! You completed level ${level}!\n\nMoving to ${levelDescriptions[nextLevel-1]}`);
-          setLevel(prev => prev + 1);
+          setLevel(prevLevel => prevLevel + 1);
+          
+          // Show level info for the next level
+          setShowLevelInfo(true);
         }, 500);
       } else if (newValue >= totalElementsInLevel && level === 6) {
         // Game completed!
         setTimeout(() => {
+          // Play success sound for game completion
+          useAudio.getState().playSuccess();
+          
+          // Show completion message
           alert(`Congratulations! You completed all levels!\n\nYou are a periodic table master!\n\nFinal score: ${score + pointsPerElement}`);
           setIsPlaying(false);
         }, 500);
@@ -211,6 +222,7 @@ function App() {
       return newValue;
     });
     
+    // Play success sound for correct element placement
     useAudio.getState().playSuccess();
   };
   
@@ -304,6 +316,15 @@ function App() {
       >
         {useAudio.getState().isMuted ? 'Unmute' : 'Mute'}
       </button>
+
+      {/* Level Info Overlay */}
+      {showLevelInfo && (
+        <LevelInfo
+          level={level}
+          isVisible={showLevelInfo}
+          onClose={() => setShowLevelInfo(false)}
+        />
+      )}
     </div>
   );
 }
