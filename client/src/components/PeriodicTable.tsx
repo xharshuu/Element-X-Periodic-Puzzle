@@ -2,6 +2,17 @@ import React, { useState, useEffect } from 'react';
 import ElementBlock from './ElementBlock';
 import { periodicTableData } from '../data/periodicTableData';
 
+// Define element interface
+interface ElementData {
+  symbol: string;
+  name: string;
+  atomicNumber: number;
+  row: number;
+  col: number;
+  category: string;
+  displayType?: 'symbol' | 'name';
+}
+
 interface PeriodicTableProps {
   level: number;
   onCorrectMatch: () => void;
@@ -24,7 +35,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
   // State for tracking matched elements
   const [matchedElements, setMatchedElements] = useState<string[]>([]);
   // State for the current puzzle layout
-  const [currentLayout, setCurrentLayout] = useState<any[]>([]);
+  const [currentLayout, setCurrentLayout] = useState<ElementData[]>([]);
   
   // Initialize or shuffle the periodic table layout
   useEffect(() => {
@@ -33,7 +44,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
       let elementsToShow = [...periodicTableData];
       
       if (level === 1) {
-        elementsToShow = periodicTableData.filter(el => 
+        elementsToShow = periodicTableData.filter((el: ElementData) => 
           el.category === 'alkali' || 
           el.category === 'alkaline' || 
           el.category === 'nonmetals' || 
@@ -42,13 +53,13 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
       }
       
       // Randomize the display of symbols for some elements
-      const shuffledElements = elementsToShow.map(element => {
+      const shuffledElements = elementsToShow.map((element: ElementData) => {
         // 30% chance to hide symbol and show chemical name or vice versa
         const shouldAlternate = Math.random() < 0.3;
         
         return {
           ...element,
-          displayType: shouldAlternate ? 'name' : 'symbol'
+          displayType: shouldAlternate ? 'name' as const : 'symbol' as const
         };
       });
       
@@ -111,7 +122,7 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
               isMatched={matchedElements.includes(element.symbol)}
               onClick={() => handleElementClick(element.symbol)}
               color={getCategoryColor(element.category)}
-              displayType={element.displayType}
+              displayType={element.displayType || 'symbol'}
             />
           );
         } else {

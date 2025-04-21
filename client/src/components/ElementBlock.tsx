@@ -8,6 +8,7 @@ interface ElementProps {
     row: number;
     col: number;
     category: string;
+    displayType?: 'symbol' | 'name';
   };
   isSelected: boolean;
   isMatched: boolean;

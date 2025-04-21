@@ -70,7 +70,7 @@ function App() {
   
   // Timer effect
   useEffect(() => {
-    let interval = null;
+    let interval: ReturnType<typeof setInterval> | undefined = undefined;
     
     if (isPlaying && !isPaused && time > 0) {
       interval = setInterval(() => {
@@ -81,10 +81,12 @@ function App() {
       handleGameOver();
     }
     
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isPlaying, isPaused, time]);
   
-  const formatTime = (timeInSeconds) => {
+  const formatTime = (timeInSeconds: number): string => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
