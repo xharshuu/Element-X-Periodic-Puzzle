@@ -1,9 +1,28 @@
-import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect } from "react";
-import InteractiveSpheres from "./components/InteractiveSpheres";
+import React, { useState, useEffect } from "react";
 import { useAudio } from "./lib/stores/useAudio";
+import PeriodicTable from "./components/PeriodicTable";
+import './index.css';
+
+// Define the different element categories
+const categories = [
+  { id: 'alkali', name: 'Alkali Metals', color: '#ff9999' },
+  { id: 'alkaline', name: 'Alkaline Earth Metals', color: '#ffcc66' },
+  { id: 'transition', name: 'Transition Metals', color: '#cc9966' },
+  { id: 'post-transition', name: 'Post-Transition Metals', color: '#99cc99' },
+  { id: 'metalloids', name: 'Metalloids', color: '#66cccc' },
+  { id: 'nonmetals', name: 'Nonmetals', color: '#6699cc' },
+  { id: 'noble', name: 'Noble Gases', color: '#9999cc' },
+  { id: 'lanthanides', name: 'Lanthanides', color: '#cc99cc' },
+  { id: 'actinides', name: 'Actinides', color: '#cc6699' }
+];
 
 function App() {
+  const [score, setScore] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [time, setTime] = useState(600); // 10 minutes in seconds
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  
   // Initialize audio elements
   useEffect(() => {
     // Create background music element
@@ -48,44 +67,132 @@ function App() {
       bgMusic.currentTime = 0;
     };
   }, []);
+  
+  // Timer effect
+  useEffect(() => {
+    let interval = null;
+    
+    if (isPlaying && !isPaused && time > 0) {
+      interval = setInterval(() => {
+        setTime((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (time === 0) {
+      // Game over when time runs out
+      handleGameOver();
+    }
+    
+    return () => clearInterval(interval);
+  }, [isPlaying, isPaused, time]);
+  
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+  
+  const handleStart = () => {
+    setIsPlaying(true);
+    setIsPaused(false);
+    // Start playing background music
+    if (!useAudio.getState().isMuted) {
+      useAudio.getState().backgroundMusic?.play();
+    }
+  };
+  
+  const handlePause = () => {
+    setIsPaused(!isPaused);
+    if (!isPaused) {
+      // Pause music
+      useAudio.getState().backgroundMusic?.pause();
+    } else {
+      // Resume music
+      if (!useAudio.getState().isMuted) {
+        useAudio.getState().backgroundMusic?.play();
+      }
+    }
+  };
+  
+  const handleShuffle = () => {
+    // Re-shuffle the board (will be implemented in PeriodicTable component)
+    useAudio.getState().playHit();
+  };
+  
+  const handleCorrectMatch = () => {
+    setScore((prevScore) => prevScore + 10);
+    useAudio.getState().playSuccess();
+  };
+  
+  const handleGameOver = () => {
+    setIsPlaying(false);
+    alert(`Game Over! Your score is ${score}`);
+  };
 
   return (
-    <div style={{ width: '100vw', height: '100vh', position: 'relative', overflow: 'hidden', backgroundColor: '#0f0f17' }}>
-      <Canvas
-        camera={{
-          position: [0, 0, 15],
-          fov: 60,
-          near: 0.1,
-          far: 1000
-        }}
-        gl={{
-          antialias: true,
-          alpha: true
-        }}
-        style={{ background: 'radial-gradient(#1a1a2e, #0f0f17)' }}
-      >
-        <color attach="background" args={["#0f0f17"]} />
-        
-        <Suspense fallback={null}>
-          <InteractiveSpheres />
-        </Suspense>
-      </Canvas>
+    <div className="game-container">
+      <div className="game-header">
+        <h1>Periodic Puzzle</h1>
+        <div className="game-stats">
+          <div className="stat">Score: {score}</div>
+          <div className="stat">Level: {level}</div>
+          <div className="stat">Time: {formatTime(time)}</div>
+        </div>
+        <div className="game-controls">
+          <button 
+            className="control-button"
+            onClick={handleStart}
+            disabled={isPlaying && !isPaused}
+          >
+            Start
+          </button>
+          <button 
+            className="control-button"
+            onClick={handlePause}
+            disabled={!isPlaying}
+          >
+            Pause
+          </button>
+          <button 
+            className="control-button"
+            onClick={handleShuffle}
+            disabled={!isPlaying || isPaused}
+          >
+            Shuffle
+          </button>
+        </div>
+      </div>
+      
+      <div className="category-legend">
+        {categories.map((category) => (
+          <div key={category.id} className="legend-item">
+            <div 
+              className="color-box" 
+              style={{ backgroundColor: category.color }}
+            ></div>
+            <div className="category-name">{category.name}</div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="periodic-table-container">
+        {isPlaying ? (
+          <PeriodicTable 
+            level={level} 
+            onCorrectMatch={handleCorrectMatch} 
+            isPaused={isPaused}
+            categories={categories}
+          />
+        ) : (
+          <div className="start-prompt">
+            <h2>Click Start to Begin!</h2>
+            <p>Match elements correctly to earn points before time runs out.</p>
+          </div>
+        )}
+      </div>
       
       {/* Audio toggle button */}
       <button 
         onClick={() => useAudio.getState().toggleMute()}
-        style={{
-          position: 'absolute',
-          bottom: '20px',
-          right: '20px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          border: 'none',
-          color: 'white',
-          padding: '8px 12px',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          zIndex: 100
-        }}
+        className="audio-toggle"
       >
         {useAudio.getState().isMuted ? 'Unmute' : 'Mute'}
       </button>
