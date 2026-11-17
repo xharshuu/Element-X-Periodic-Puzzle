@@ -25,13 +25,15 @@ interface PeriodicTableProps {
   onCorrectMatch: () => void;
   isPaused: boolean;
   categories: Array<Category>;
+  shuffleToken: number;
 }
 
 const PeriodicTable: React.FC<PeriodicTableProps> = ({ 
   level, 
   onCorrectMatch, 
   isPaused,
-  categories 
+  categories,
+  shuffleToken
 }) => {
   // State for tracking selected element
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
@@ -151,6 +153,20 @@ const PeriodicTable: React.FC<PeriodicTableProps> = ({
     
     initializeGame();
   }, [level]);
+
+  // Shuffle the remaining palette order without clearing placed elements.
+  useEffect(() => {
+    if (shuffleToken === 0) return;
+
+    setPaletteElements((currentElements) => {
+      const shuffled = [...currentElements];
+      for (let i = shuffled.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    });
+  }, [shuffleToken]);
   
   // Find the specific color for a category
   const getCategoryColor = (categoryId: string): string => {

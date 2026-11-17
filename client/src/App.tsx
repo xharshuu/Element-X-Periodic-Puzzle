@@ -34,6 +34,7 @@ function App() {
   const [elementsCorrect, setElementsCorrect] = useState(0);
   const [totalElementsInLevel, setTotalElementsInLevel] = useState(0);
   const [showLevelInfo, setShowLevelInfo] = useState(false);
+  const [shuffleToken, setShuffleToken] = useState(0);
   
   // Initialize audio elements
   useEffect(() => {
@@ -137,7 +138,7 @@ function App() {
   };
   
   const handleShuffle = () => {
-    // Re-shuffle the board (will be implemented in PeriodicTable component)
+    setShuffleToken((token) => token + 1);
     useAudio.getState().playHit();
   };
   
@@ -300,6 +301,7 @@ function App() {
             onCorrectMatch={handleCorrectMatch} 
             isPaused={isPaused}
             categories={categories}
+            shuffleToken={shuffleToken}
           />
         ) : (
           <div className="start-prompt">
